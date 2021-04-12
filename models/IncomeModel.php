@@ -95,5 +95,18 @@ class Income {
         printf("Error : %s.\n", $statement->error);
         return false;
     }
+
+    public function delete(PDO $db_connection){
+        $query = 'DELETE FROM incomes WHERE id = :id';
+
+        $statement = $db_connection->prepare($query);
+        $this->id = htmlspecialchars(strip_tags($this->id));
+        $statement->bindParam(':id', $this->id);
+
+        if($statement->execute()) return true;
+
+        printf("Error : %s.\n", $statement->error);
+        return false;
+    }
 }
 ?>
