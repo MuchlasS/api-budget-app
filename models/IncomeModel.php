@@ -70,5 +70,30 @@ class Income {
         printf("Error : %s.\n", $statement->error);
         return false;
     }
+
+    public function update(PDO $db_connection){
+        $query = 'UPDATE incomes
+        SET
+            amount = :amount,
+            date = :date,
+            category_id = :category_id
+        WHERE
+            id = :id';
+        
+        $statement = $db_connection->prepare($query);
+        $this->amount = htmlspecialchars(strip_tags($this->amount));
+        $this->date = htmlspecialchars(strip_tags($this->date));
+        $this->category_id = htmlspecialchars(strip_tags($this->category_id));
+
+        $statement->bindParam(':amount', $this->amount);
+        $statement->bindParam(':date', $this->date);
+        $statement->bindParam(':category_id', $this->category_id);
+        $statement->bindParam(':id', $this->id);
+
+        if($statement->execute()) return true;
+
+        printf("Error : %s.\n", $statement->error);
+        return false;
+    }
 }
 ?>
